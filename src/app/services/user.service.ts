@@ -15,4 +15,20 @@ export class UserService {
   getTeams(){
     return this.http.get(`http://localhost:8080/getTeams`);
   }
+
+  createUser(data:any){
+    return this.http.post(`http://localhost:8080/addUser`,data)
+  }
+
+  updateUser(id:number,data:any){
+    return this.http.put(`http://localhost:8080/updateUser/${id}`,data)
+  }
+
+  deleteUser(id:number){
+    return this.http.delete(`http://localhost:8080/deleteUser/${id}`)
+  }
+
+  login(data:any){
+    return this.http.post(`http://localhost:8080/login`,data)
+  }
 }

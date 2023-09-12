@@ -1,0 +1,26 @@
+
+    <div class="container my-5">
+        <div class="card w-50 m-auto">
+            <div class="card-body shadow-lg">
+                <form [formGroup]="formLogin" class="m-auto d-flex flex-column h-100 w-50" (submit)="logIn()">
+
+                    <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email">
+                      </mat-form-field>
+                     <mat-form-field>
+                    <mat-label>Password</mat-label>
+                   <input matInput formControlName="password" type="password">
+                   </mat-form-field>  
+                   
+                   <div class="col-12 d-flex justify-content-end">
+                    <div class="example-button-row">
+                    <button mat-raised-button color="primary" type="submit" class="save-button" >Login</button>
+                    </div>
+                  </div>
+                   </form>
+            </div>
+        </div>
+    </div>
+
+

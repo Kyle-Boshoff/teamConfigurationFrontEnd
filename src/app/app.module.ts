@@ -4,23 +4,31 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {MatTableModule} from '@angular/material/table';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import BrowserAnimationsModule
+import {MatButtonModule} from '@angular/material/button';
+import { LoginComponent } from './auth/login/login.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,MatTableModule,
-    MatFormFieldModule, MatSelectModule, NgFor, MatInputModule, FormsModule, BrowserAnimationsModule
+    MatFormFieldModule, MatSelectModule,
+     NgFor, MatInputModule, FormsModule, ReactiveFormsModule,
+     BrowserAnimationsModule,MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
