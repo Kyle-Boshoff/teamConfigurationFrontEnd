@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import{HttpClient} from '@angular/common/http';
+import { throwIfEmpty } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
+  private userData:any;
 
   constructor(private http:HttpClient) { }
 
@@ -30,5 +33,18 @@ export class UserService {
 
   login(data:any){
     return this.http.post(`http://localhost:8080/login`,data)
+  }
+
+  getUserData(){
+   return localStorage.getItem("userInformation");
+  }
+
+  setUserData(user:any){
+   this.userData = user;
+   localStorage.setItem("userInformation", JSON.stringify(this.userData));
+  }
+
+  deleteUserData(){
+    localStorage.removeItem("userInformation");
   }
 }

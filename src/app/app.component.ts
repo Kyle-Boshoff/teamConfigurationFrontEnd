@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { UserService } from './services/user.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component} from '@angular/core';
+
 
 @Component({
   selector: 'app-root',
@@ -9,5 +8,5 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AppComponent{
 
-
+title:string="Team Configuration";
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -11,7 +12,9 @@ export class LoginComponent {
 
   formLogin: FormGroup;
 
-  constructor(private userService:UserService,private formBuilder:FormBuilder){
+  errorMessage:string="";
+
+  constructor(private userService:UserService,private formBuilder:FormBuilder,private router:Router){
     this.formLogin = this.formBuilder.group({
       email: ["", [Validators.required]],
       password: ["", [Validators.required]],
@@ -20,9 +23,19 @@ export class LoginComponent {
   }
 
   logIn(){
-    this.userService.login(this.formLogin).subscribe(data=>{
-      console.log(data);
+    this.userService.login(this.formLogin.value).subscribe(
+      data=>{
+        this.errorMessage="";
+        
+        if (data !== null) {
+          
+          this.userService.setUserData(data);
+          this.router.navigateByUrl("/dashboard");
+        }
       
+    },error=>{
+      this.errorMessage=error.error;
+      this.router.navigateByUrl("/login");
     })
   }
 

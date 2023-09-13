@@ -1,5 +1,7 @@
+import { Location } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -15,6 +17,7 @@ export class DashboardComponent  implements OnInit, AfterViewInit{
   view:string="users";
   selectedUserID:number=0;
 
+
   action:string="";
 
   addUserData: any= {
@@ -27,8 +30,10 @@ export class DashboardComponent  implements OnInit, AfterViewInit{
 
   displayedColumns: string[] = ['Name', 'Surname', 'Email','Team','Edit'];
   teams: any;
+  loggedInUser: any;
+  userObject: any;
 
-  constructor(private userService:UserService,private formBuilder:FormBuilder){
+  constructor(private userService:UserService,private formBuilder:FormBuilder,private router:Router,private location:Location){
     this.formAdd = this.formBuilder.group({
       name: ["", [Validators.required]],
       email: ["", [Validators.required]],
@@ -36,22 +41,21 @@ export class DashboardComponent  implements OnInit, AfterViewInit{
       password: ["", [Validators.required]],
       team: ["", [Validators.required]],
     });
-    
+
   }
   ngAfterViewInit(): void {
-   
-    
+
+    this.loggedInUser = this.userService.getUserData();
+    this.userObject = JSON.parse(this.loggedInUser)[0];
+
   }
   ngOnInit(): void {
-    // this.formAdd = this.createFormGroup([
-    //   "name",
-    //   "email",
-    //   "surname",
-    //   "password",
-    //   "team"
-    // ])
+
     this.getUsers();
     this.getTeams();
+    this.loggedInUser = this.userService.getUserData();
+    this.userObject = JSON.parse(this.loggedInUser)[0];
+
   }
 
 
@@ -64,14 +68,14 @@ export class DashboardComponent  implements OnInit, AfterViewInit{
   getTeams(){
     this.userService.getTeams().subscribe(data=>{
       this.teams= data;
-      
+
     })
   }
 
   changeView(){
    if (this.view == "users") {
    this.view = "addNew"
-   
+
    }else{
    this.view = "users"
    }
@@ -81,21 +85,24 @@ export class DashboardComponent  implements OnInit, AfterViewInit{
     const value = this.formAdd.value;
 
     this.addUserData= value;
-    console.log(this.addUserData);
-    
+
+
    this.userService.createUser(this.addUserData).subscribe(data=>{
-    console.log(data);
-    
+
+
    },error=>{
     console.log(error.message);
-    
-   })
+
+   });
+
+
+   this.location.historyGo();
   }
 
   updateUserData(id:number){
   this.action='';
   this.userService.updateUser(id,this.formAdd.value).subscribe(data=>{
-    console.log(data);  
+
   })
   this.selectedUserID =0;
   this.formAdd = this.formBuilder.group({
@@ -105,11 +112,12 @@ export class DashboardComponent  implements OnInit, AfterViewInit{
     password: ["", [Validators.required]],
     team: ["", [Validators.required]],
   });
+  this.location.historyGo();
   }
 
   updateUser(element:any){
     this.selectedUserID =element.id;
-    
+
     this.view = "addNew";
     this.action="update";
     this.formAdd.get("name")?.setValue(element.name);
@@ -121,8 +129,10 @@ export class DashboardComponent  implements OnInit, AfterViewInit{
 
   deleteUser(id:number){
   this.userService.deleteUser(id).subscribe(data=>{
-    console.log(data);
-    
+
+
   });
+
+  this.location.historyGo();
   }
 }
